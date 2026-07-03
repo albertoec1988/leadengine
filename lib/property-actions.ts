@@ -11,6 +11,8 @@ const ZONE_COORDS: Record<string, [number, number]> = {
   "Coral Gables": [25.721, -80.268],
   "South Miami": [25.7079, -80.2939],
   Kendall: [25.6793, -80.3173],
+  Miami: [25.7743, -80.2094],
+  "Fort Lauderdale": [26.1224, -80.1373],
 }
 
 export async function updatePropertyStatus(id: string, status: string) {

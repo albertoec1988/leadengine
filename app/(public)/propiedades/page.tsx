@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
   title: "Propiedades",
-  description: "Explora propiedades en venta en Coral Gables, South Miami y Kendall.",
+  description: "Explora propiedades en venta en Coral Gables, South Miami, Kendall, Miami y Fort Lauderdale.",
 }
 
 const STATUS_OPTIONS = [

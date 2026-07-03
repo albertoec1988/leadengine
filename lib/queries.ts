@@ -59,4 +59,4 @@ export async function getActivePropertyCount() {
   return prisma.property.count({ where: { status: "for_sale" } })
 }
 
-export const ZONES = ["Coral Gables", "South Miami", "Kendall"] as const
+export const ZONES = ["Coral Gables", "South Miami", "Kendall", "Miami", "Fort Lauderdale"] as const

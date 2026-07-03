@@ -4,7 +4,7 @@ import { ValuationForm } from "@/components/site/ValuationForm"
 export const metadata: Metadata = {
   title: "Valora tu casa",
   description:
-    "Recibe una estimación inmediata del valor de tu vivienda en Coral Gables, South Miami o Kendall.",
+    "Recibe una estimación inmediata del valor de tu vivienda en Coral Gables, South Miami, Kendall, Miami o Fort Lauderdale.",
 }
 
 export default function ValuacionPage() {

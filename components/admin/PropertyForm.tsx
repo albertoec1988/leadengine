@@ -7,7 +7,7 @@ import {
   type CreatePropertyResult,
 } from "@/lib/property-actions"
 
-const ZONES = ["Coral Gables", "South Miami", "Kendall"]
+const ZONES = ["Coral Gables", "South Miami", "Kendall", "Miami", "Fort Lauderdale"]
 const STATUS = [
   { value: "for_sale", label: "En venta" },
   { value: "pending", label: "Reservada" },
