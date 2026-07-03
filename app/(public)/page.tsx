@@ -7,6 +7,8 @@ import {
 import { formatCompactUSD } from "@/lib/format"
 import { PropertyCard } from "@/components/site/PropertyCard"
 
+export const dynamic = "force-dynamic"
+
 export default async function HomePage() {
   const [featured, zones, activeCount] = await Promise.all([
     getFeaturedProperties(6),

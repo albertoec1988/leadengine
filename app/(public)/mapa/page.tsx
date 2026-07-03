@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: "Explora nuestras propiedades sobre el mapa de Coral Gables, South Miami y Kendall.",
 }
 
+export const dynamic = "force-dynamic"
+
 export default async function MapaPage() {
   const properties = await getProperties()
   const points: MapPoint[] = properties.map((p) => ({

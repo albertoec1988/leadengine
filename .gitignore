@@ -42,6 +42,7 @@ next-env.d.ts
 
 # prisma
 /lib/generated/prisma
+/prisma/schema.pg.prisma
 /dev.db
 /dev.db-journal
 *.db-journal
