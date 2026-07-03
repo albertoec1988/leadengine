@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  role      String   @default("agent") // admin | agent
+  password  String // hash
+  leads     Lead[]
+  createdAt DateTime @default(now())
+}
+
+model Lead {
+  id             String         @id @default(cuid())
+  name           String
+  email          String?
+  phone          String?
+  channel        String // web | whatsapp | instagram | valuation
+  status         String         @default("new")
+  score          Int            @default(0)
+  zone           String?
+  message        String?
+  property       Property?      @relation(fields: [propertyId], references: [id])
+  propertyId     String?
+  agent          User?          @relation(fields: [agentId], references: [id])
+  agentId        String?
+  activities     LeadActivity[]
+  opportunity    Opportunity?
+  valuations     Valuation[]
+  createdAt      DateTime       @default(now())
+  lastActivityAt DateTime?
+}
+
+model LeadActivity {
+  id        String   @id @default(cuid())
+  lead      Lead     @relation(fields: [leadId], references: [id])
+  leadId    String
+  type      String // note | call | email | status_change
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model Property {
+  id            String        @id @default(cuid())
+  title         String
+  price         Int
+  zone          String
+  address       String
+  lat           Float
+  lng           Float
+  status        String        @default("for_sale") // for_sale | pending | sold
+  bedrooms      Int
+  bathrooms     Int
+  areaSqft      Int
+  photoUrl      String
+  leads         Lead[]
+  opportunities Opportunity[]
+  createdAt     DateTime      @default(now())
+}
+
+model Opportunity {
+  id          String   @id @default(cuid())
+  lead        Lead     @relation(fields: [leadId], references: [id])
+  leadId      String   @unique
+  property    Property @relation(fields: [propertyId], references: [id])
+  propertyId  String
+  stage       String   @default("new") // new | contacted | visit | offer | closed
+  value       Int
+  probability Int      @default(20)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Valuation {
+  id        String   @id @default(cuid())
+  zone      String
+  areaSqft  Int
+  bedrooms  Int
+  bathrooms Int
+  condition String
+  estimate  Int
+  low       Int
+  high      Int
+  lead      Lead?    @relation(fields: [leadId], references: [id])
+  leadId    String?
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  type      String // hot_lead_unattended | stalled_opportunity | new_interest
+  refId     String
+  message   String
+  severity  String   @default("medium")
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
