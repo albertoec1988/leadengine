@@ -89,7 +89,11 @@ export function InertiaMarquee({
     >
       <div ref={trackRef} className="flex w-max items-center">
         {children}
-        {children}
+        {heavyEnabled && (
+          <div aria-hidden="true" className="flex items-center">
+            {children}
+          </div>
+        )}
       </div>
     </div>
   )
