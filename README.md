@@ -37,6 +37,13 @@ estados, notas e historial), pipeline visual por etapas con importes, gestión d
 propiedades, mapa interno, analítica (Recharts) y alertas inteligentes. Incluye un
 botón de **captura omnicanal (demo)** para simular leads entrantes de WhatsApp/Instagram.
 
+### Valuación con IA real (opcional)
+
+La herramienta de valuación funciona sin coste con un modelo de comparables. Si defines
+`ANTHROPIC_API_KEY` (copia `.env.example` a `.env`), la valuación usa **Claude
+(`claude-opus-4-8`)** para refinar la estimación y añadir una justificación; ante cualquier
+error o sin clave, cae automáticamente al modelo de comparables — la demo nunca se rompe.
+
 ## Arquitectura
 
 - **Next.js 16** (App Router) + **React 19** + **TypeScript** — una sola app: web + panel + backend.

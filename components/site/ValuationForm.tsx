@@ -51,6 +51,14 @@ export function ValuationForm() {
         <p className="mt-2 text-sm text-muted">
           Rango estimado {formatUSD(result.low)} – {formatUSD(result.high)}
         </p>
+        {result.rationale && (
+          <p className="mx-auto mt-4 max-w-md rounded-lg bg-paper px-4 py-3 text-sm text-ink">
+            {result.rationale}
+          </p>
+        )}
+        <p className="mt-3 text-xs uppercase tracking-wide text-muted">
+          {result.source === "ai" ? "Estimación asistida por IA" : "Modelo de comparables"}
+        </p>
         <p className="mx-auto mt-5 max-w-sm text-sm text-ink">
           Gracias. Un agente de Floridian First te contactará con un análisis
           detallado y comparables reales de tu zona.

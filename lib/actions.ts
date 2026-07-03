@@ -1,7 +1,8 @@
 "use server"
 
 import { prisma } from "@/lib/db"
-import { estimateValue, type PropertyCondition } from "@/lib/valuation"
+import { type PropertyCondition } from "@/lib/valuation"
+import { estimateValueSmart } from "@/lib/valuation-ai"
 import { scoreLead } from "@/lib/scoring"
 import { normalizeInbound } from "@/lib/channels"
 import { revalidatePath } from "next/cache"
@@ -13,7 +14,14 @@ async function pickAgentId(): Promise<string | null> {
 }
 
 export type ValuationResponse =
-  | { ok: true; estimate: number; low: number; high: number }
+  | {
+      ok: true
+      estimate: number
+      low: number
+      high: number
+      rationale: string | null
+      source: "ai" | "comparables"
+    }
   | { ok: false; error: string }
 
 export async function submitValuation(input: {
@@ -33,7 +41,7 @@ export async function submitValuation(input: {
     return { ok: false, error: "Introduce una superficie válida." }
   }
 
-  const valuation = estimateValue({
+  const valuation = await estimateValueSmart({
     zone: input.zone,
     areaSqft: input.areaSqft,
     bedrooms: input.bedrooms,
@@ -90,7 +98,14 @@ export async function submitValuation(input: {
   revalidatePath("/admin/leads")
   revalidatePath("/admin")
 
-  return { ok: true, estimate: valuation.estimate, low: valuation.low, high: valuation.high }
+  return {
+    ok: true,
+    estimate: valuation.estimate,
+    low: valuation.low,
+    high: valuation.high,
+    rationale: valuation.rationale,
+    source: valuation.source,
+  }
 }
 
 export type ContactResponse = { ok: true } | { ok: false; error: string }
