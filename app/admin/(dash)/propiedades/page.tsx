@@ -45,7 +45,17 @@ export default async function AdminPropertiesPage() {
                   <td className="px-4 py-3 text-muted">{p.zone}</td>
                   <td className="px-4 py-3 font-display text-base text-ink">{formatUSD(p.price)}</td>
                   <td className="px-4 py-3 text-muted">{p.bedrooms}h · {p.bathrooms}b · {formatSqft(p.areaSqft)}</td>
-                  <td className="px-4 py-3"><PropertyStatusControl id={p.id} status={p.status} /></td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <PropertyStatusControl id={p.id} status={p.status} />
+                      <Link
+                        href={`/admin/propiedades/${p.id}/editar`}
+                        className="text-sm font-medium text-gold-deep hover:underline"
+                      >
+                        Editar
+                      </Link>
+                    </div>
+                  </td>
                   <td className="px-4 py-3">
                     <Link href={`/propiedades/${p.id}`} className="text-xs text-gold-deep hover:text-ink">Ver en web →</Link>
                   </td>
