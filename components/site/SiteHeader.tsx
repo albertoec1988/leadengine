@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 
 const NAV = [
   { href: "/propiedades", label: "Listings" },
@@ -14,6 +15,8 @@ const NAV = [
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+  const overHero = pathname === "/" && !scrolled
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -25,9 +28,9 @@ export function SiteHeader() {
   return (
     <header
       className={`sticky top-0 z-40 transition-colors duration-300 ${
-        scrolled
-          ? "border-b border-white/10 bg-ffr-navy shadow-lg shadow-black/20"
-          : "bg-transparent"
+        overHero
+          ? "bg-transparent"
+          : "border-b border-white/10 bg-ffr-navy shadow-lg shadow-black/20"
       }`}
     >
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-5">
