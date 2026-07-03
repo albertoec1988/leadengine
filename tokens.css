@@ -1,0 +1,31 @@
+/* Floridian First Realty — "Coastal" design tokens (portable)
+ * Consumed by app/globals.css via @theme inline. Swap values here to rebrand.
+ */
+:root {
+  /* palette (OKLCH) */
+  --paper: oklch(98.5% 0.006 90);
+  --paper-2: oklch(96% 0.009 88);
+  --sand: oklch(92.5% 0.016 84);
+  --ink: oklch(24% 0.03 256);
+  --navy: oklch(32% 0.062 258);
+  --navy-2: oklch(40% 0.07 258);
+  --muted: oklch(49% 0.021 258);
+  --line: oklch(89% 0.008 90);
+  --gold: oklch(70% 0.104 72);
+  --gold-deep: oklch(56% 0.11 64);
+  --success: oklch(58% 0.12 150);
+  --danger: oklch(58% 0.16 25);
+  --focus: oklch(56% 0.11 64);
+
+  /* type */
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 140ms;
+  --dur-mid: 240ms;
+}
