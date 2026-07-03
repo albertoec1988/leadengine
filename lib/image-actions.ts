@@ -72,6 +72,14 @@ export async function reorderImages(
 ): Promise<ActionResult> {
   if (!(await requireAdmin())) return { ok: false, error: "No autorizado." }
 
+  const own = await prisma.propertyImage.findMany({ where: { propertyId }, select: { id: true } })
+  const ownIds = new Set(own.map((i) => i.id))
+  const matches =
+    orderedIds.length === own.length && orderedIds.every((id) => ownIds.has(id))
+  if (!matches) {
+    return { ok: false, error: "La lista de imágenes no coincide con la propiedad." }
+  }
+
   const updates = reorder(orderedIds)
   await prisma.$transaction(
     updates.map((u) =>
@@ -93,6 +101,9 @@ export async function setPrimaryImage(
   if (!(await requireAdmin())) return { ok: false, error: "No autorizado." }
 
   const images = await prisma.propertyImage.findMany({ where: { propertyId } })
+  if (!images.some((i) => i.id === imageId)) {
+    return { ok: false, error: "La imagen no pertenece a la propiedad." }
+  }
   const next = computePrimaryAfterSet(
     images.map((i) => ({ id: i.id, order: i.order, isPrimary: i.isPrimary })),
     imageId,
