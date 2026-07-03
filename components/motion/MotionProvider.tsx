@@ -37,24 +37,29 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
     mqReduce.addEventListener("change", update)
     mqMobile.addEventListener("change", update)
 
-    // Smooth scroll global (solo si el usuario no pide menos movimiento).
-    let lenis: Lenis | null = null
-    let raf: ((time: number) => void) | null = null
-    if (!mqReduce.matches) {
-      lenis = new Lenis()
-      lenis.on("scroll", ScrollTrigger.update)
-      raf = (time: number) => lenis!.raf(time * 1000)
-      gsap.ticker.add(raf)
-      gsap.ticker.lagSmoothing(0)
-    }
-
     return () => {
       mqReduce.removeEventListener("change", update)
       mqMobile.removeEventListener("change", update)
-      if (raf) gsap.ticker.remove(raf)
-      lenis?.destroy()
     }
   }, [])
+
+  // Ciclo de vida de Lenis (smooth scroll): se crea/destruye reactivamente
+  // cuando `enabled` cambia en runtime (p.ej. el usuario activa reduced-motion
+  // a mitad de sesión), en vez de fijarse solo con el valor inicial.
+  useEffect(() => {
+    if (!state.enabled) return
+
+    const lenis = new Lenis()
+    lenis.on("scroll", ScrollTrigger.update)
+    const raf = (time: number) => lenis.raf(time * 1000)
+    gsap.ticker.add(raf)
+    gsap.ticker.lagSmoothing(0)
+
+    return () => {
+      gsap.ticker.remove(raf)
+      lenis.destroy()
+    }
+  }, [state.enabled])
 
   return <MotionCtx.Provider value={state}>{children}</MotionCtx.Provider>
 }

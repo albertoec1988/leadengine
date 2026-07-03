@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -13,9 +13,23 @@ const NAV = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-ffr-navy/90 backdrop-blur-md">
+    <header
+      className={`sticky top-0 z-40 transition-colors duration-300 ${
+        scrolled
+          ? "border-b border-white/10 bg-ffr-navy shadow-lg shadow-black/20"
+          : "bg-transparent"
+      }`}
+    >
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-5">
         <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-3">
           <Image
@@ -26,7 +40,7 @@ export function SiteHeader() {
             className="h-10 w-auto"
             priority
           />
-          <span className="font-montserrat text-sm font-extrabold uppercase tracking-[0.18em] text-white">
+          <span className="font-montserrat text-sm font-extrabold uppercase tracking-[0.18em] text-white [text-shadow:0_1px_8px_rgb(0_0_0/0.45)]">
             Floridian First <span className="font-semibold text-white/80">Realty</span>
           </span>
         </Link>
@@ -36,7 +50,7 @@ export function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className="font-montserrat text-sm font-semibold tracking-wide text-white/95 transition-colors duration-[var(--dur-fast)] hover:text-white"
+              className="relative font-montserrat text-[15px] font-bold tracking-wide text-white [text-shadow:0_1px_8px_rgb(0_0_0/0.45)] after:absolute after:inset-x-0 after:-bottom-1 after:h-0.5 after:origin-left after:scale-x-0 after:bg-white after:transition-transform after:duration-200 hover:after:scale-x-100"
             >
               {item.label}
             </Link>
@@ -44,7 +58,10 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-4 md:flex">
-          <Link href="/admin" className="text-sm text-white/80 transition-colors hover:text-white">
+          <Link
+            href="/admin"
+            className="text-sm text-white/85 transition-colors hover:text-white [text-shadow:0_1px_8px_rgb(0_0_0/0.45)]"
+          >
             Team access
           </Link>
           <Link

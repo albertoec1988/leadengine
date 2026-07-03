@@ -74,7 +74,7 @@ export function ScrubHero({
   )
 
   return (
-    <section ref={rootRef} className="relative h-[250vh] bg-ffr-navy">
+    <section ref={rootRef} className={`relative ${heavyEnabled ? "h-[250vh]" : "h-svh"} bg-ffr-navy`}>
       <div className="sticky top-0 h-svh w-full overflow-hidden">
         <div ref={mediaRef} className="absolute inset-0 will-change-transform">
           {useVideo ? (
