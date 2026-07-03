@@ -26,6 +26,11 @@
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-fast: 140ms;
   --dur-mid: 240ms;
+
+  /* Identidad Floridian First Realty (portada) — no tocar los tokens existentes */
+  --ffr-navy: #00305b;
+  --ffr-navy-soft: rgb(0 48 91 / 0.82);
+  --ffr-slate: #83969c;
 }
 
 @theme inline {
@@ -47,6 +52,11 @@
   --font-display: var(--font-fraunces), Georgia, serif;
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
+
+  --color-ffr-navy: var(--ffr-navy);
+  --color-ffr-navy-soft: var(--ffr-navy-soft);
+  --color-ffr-slate: var(--ffr-slate);
+  --font-montserrat: var(--font-montserrat);
 }
 
 * {
@@ -96,4 +106,8 @@ a {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+@utility font-montserrat {
+  font-family: var(--font-montserrat), Montserrat, ui-sans-serif, system-ui, sans-serif;
 }
