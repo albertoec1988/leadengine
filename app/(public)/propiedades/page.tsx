@@ -2,6 +2,10 @@ import type { Metadata } from "next"
 import { getProperties, ZONES } from "@/lib/queries"
 import { PropertyCard } from "@/components/site/PropertyCard"
 
+// Los datos vienen de la base de datos; renderizamos en cada request para no
+// depender de la BD durante el build (igual que la home y el mapa).
+export const dynamic = "force-dynamic"
+
 export const metadata: Metadata = {
   title: "Propiedades",
   description: "Explora propiedades en venta en Coral Gables, South Miami y Kendall.",

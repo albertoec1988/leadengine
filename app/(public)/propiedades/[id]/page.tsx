@@ -7,6 +7,10 @@ import { formatUSD, formatSqft } from "@/lib/format"
 import { PropertyStatusBadge } from "@/components/site/StatusBadge"
 import { PropertyContactForm } from "@/components/site/PropertyContactForm"
 
+// El detalle depende de un id dinámico y consulta la BD; se renderiza en cada
+// request para no instanciar Prisma ni consultar la BD durante el build.
+export const dynamic = "force-dynamic"
+
 export async function generateMetadata({
   params,
 }: {
