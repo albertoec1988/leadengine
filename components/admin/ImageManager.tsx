@@ -74,7 +74,7 @@ export function ImageManager({
         <input type="file" accept="image/*" multiple hidden onChange={onFiles} disabled={uploading} />
       </label>
 
-      {error && <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+      {error && <p role="alert" className="mt-3 rounded-lg bg-danger/15 px-3 py-2 text-sm text-danger">{error}</p>}
 
       {ordered.length === 0 ? (
         <p className="mt-4 text-sm text-muted">Aún no hay imágenes. La portada usará un placeholder.</p>

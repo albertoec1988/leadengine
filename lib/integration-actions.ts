@@ -20,7 +20,16 @@ export async function saveIntegration(
   const def = getChannel(channel)
   if (!def) return { ok: false, error: "Canal desconocido." }
 
-  const config: Record<string, string> = {}
+  const existing = await prisma.integration.findUnique({ where: { channel } })
+  let config: Record<string, string> = {}
+  if (existing?.config) {
+    try {
+      config = decryptJSON<Record<string, string>>(existing.config)
+    } catch {
+      config = {}
+    }
+  }
+
   for (const field of def.fields) {
     const value = String(formData.get(field.name) ?? "").trim()
     if (value) config[field.name] = value

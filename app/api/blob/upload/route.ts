@@ -6,9 +6,9 @@ import { getSessionUser } from "@/lib/auth"
 const ALLOWED = ["image/jpeg", "image/png", "image/webp", "image/avif"]
 
 export async function POST(request: Request): Promise<NextResponse> {
-  const body = (await request.json()) as HandleUploadBody
-
   try {
+    const body = (await request.json()) as HandleUploadBody
+
     const jsonResponse = await handleUpload({
       body,
       request,

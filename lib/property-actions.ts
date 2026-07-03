@@ -27,6 +27,9 @@ export async function createProperty(
   _prev: CreatePropertyResult | null,
   formData: FormData,
 ): Promise<CreatePropertyResult> {
+  const user = await getSessionUser()
+  if (!user || user.role !== "admin") return { ok: false, error: "No autorizado." }
+
   const title = String(formData.get("title") ?? "").trim()
   const zone = String(formData.get("zone") ?? "Coral Gables")
   const price = Number(formData.get("price") ?? 0)
