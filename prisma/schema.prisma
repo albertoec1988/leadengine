@@ -62,6 +62,7 @@ model Property {
   photoUrl      String
   leads         Lead[]
   opportunities Opportunity[]
+  images        PropertyImage[]
   createdAt     DateTime      @default(now())
 }
 
@@ -101,4 +102,32 @@ model Notification {
   severity  String   @default("medium")
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
+}
+
+model PropertyImage {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  url        String
+  pathname   String
+  order      Int      @default(0)
+  isPrimary  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@index([propertyId])
+}
+
+model Integration {
+  id        String   @id @default(cuid())
+  channel   String   @unique
+  enabled   Boolean  @default(false)
+  config    String?
+  status    String   @default("disconnected")
+  updatedAt DateTime @updatedAt
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
 }
