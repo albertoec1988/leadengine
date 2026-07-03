@@ -12,11 +12,11 @@ const ASSOCIATIONS = [
 
 export function Partnerships() {
   return (
-    <section className="bg-paper-2 py-20 sm:py-24">
+    <section className="bg-ffr-navy py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-5 text-center">
         <RevealText
           as="h2"
-          className="font-montserrat text-2xl font-extrabold uppercase tracking-[0.18em] text-ffr-navy sm:text-3xl"
+          className="font-montserrat text-2xl font-extrabold uppercase tracking-[0.18em] text-white sm:text-3xl"
         >
           Partnerships &amp; Associations
         </RevealText>

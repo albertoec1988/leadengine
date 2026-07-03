@@ -22,7 +22,7 @@ export function Testimonials() {
           {TESTIMONIALS.map((t) => (
             <li key={t.author}>
               <RevealText as="p" className="text-lg italic leading-relaxed text-ffr-slate sm:text-xl">
-                "{t.quote}"
+                “{t.quote}”
               </RevealText>
               <p className="mt-6 font-montserrat text-sm font-semibold uppercase tracking-[0.2em] text-ffr-navy">
                 — {t.author}

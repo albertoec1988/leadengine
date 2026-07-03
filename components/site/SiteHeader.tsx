@@ -17,15 +17,18 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-ffr-navy/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-5">
-        <Link href="/" onClick={() => setOpen(false)} className="flex items-center">
+        <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-3">
           <Image
             src="/ffr/00_logo-floridian-white.png"
-            alt="Floridian First Realty"
+            alt=""
             width={150}
             height={40}
-            className="h-9 w-auto"
+            className="h-10 w-auto"
             priority
           />
+          <span className="font-montserrat text-sm font-extrabold uppercase tracking-[0.18em] text-white">
+            Floridian First <span className="font-semibold text-white/80">Realty</span>
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex">
@@ -33,7 +36,7 @@ export function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className="font-montserrat text-sm text-white/80 transition-colors duration-[var(--dur-fast)] hover:text-white"
+              className="font-montserrat text-sm font-semibold tracking-wide text-white/95 transition-colors duration-[var(--dur-fast)] hover:text-white"
             >
               {item.label}
             </Link>
@@ -41,7 +44,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-4 md:flex">
-          <Link href="/admin" className="text-sm text-white/60 transition-colors hover:text-white">
+          <Link href="/admin" className="text-sm text-white/80 transition-colors hover:text-white">
             Team access
           </Link>
           <Link

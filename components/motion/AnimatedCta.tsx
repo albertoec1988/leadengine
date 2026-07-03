@@ -21,7 +21,7 @@ export function AnimatedCta({
   const styles =
     variant === "solid"
       ? "bg-ffr-navy text-white hover:bg-ffr-navy/90"
-      : "border-2 border-white/80 text-white hover:bg-white hover:text-ffr-navy"
+      : "border-2 border-white/90 bg-ffr-navy/40 text-white backdrop-blur-sm hover:bg-white hover:text-ffr-navy"
   return (
     <Link href={href} className={`${base} ${styles} ${className}`}>
       <span className="transition-transform duration-200 group-hover:-translate-x-1">{children}</span>

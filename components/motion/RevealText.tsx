@@ -29,12 +29,13 @@ export function RevealText({
         type: "lines,words",
         linesClass: "overflow-hidden",
       })
+      const per = Math.min(STAGGER.words, 1.2 / Math.max(1, split.words.length))
       gsap.from(split.words, {
         yPercent: 110,
         opacity: 0,
         duration: DUR.reveal,
         ease: EASE.out,
-        stagger: STAGGER.words,
+        stagger: per,
         scrollTrigger: { trigger: ref.current, start: "top 85%", once: true },
       })
       return () => split.revert()
