@@ -13,6 +13,7 @@ const NAV = [
   { href: "/admin/mapa", label: "Mapa" },
   { href: "/admin/analitica", label: "Analítica" },
   { href: "/admin/alertas", label: "Alertas" },
+  { href: "/admin/configuracion", label: "Configuración" },
 ]
 
 function isActive(pathname: string, href: string, exact?: boolean) {
