@@ -143,3 +143,7 @@ export async function getMapProperties() {
     orderBy: { createdAt: "desc" },
   })
 }
+
+export async function getNotifications() {
+  return prisma.notification.findMany({ orderBy: { createdAt: "desc" }, take: 20 })
+}

@@ -150,3 +150,58 @@ export async function submitContactLead(input: {
 
   return { ok: true }
 }
+
+const SAMPLE_NAMES = [
+  "María González", "James Carter", "Sofía Herrera", "David Kim",
+  "Lucía Fernández", "Robert Miles", "Elena Ríos", "Andrés Costa",
+]
+const SAMPLE_MESSAGES: Record<string, string> = {
+  whatsapp: "Hola, vi una casa en su perfil, ¿sigue disponible?",
+  instagram: "Me encanta esta propiedad 😍 ¿precio?",
+  web: "Quisiera más información sobre casas en la zona.",
+}
+
+// Demo: simula un lead entrante por un canal externo y lo consolida en el CRM.
+export async function simulateInbound(channel: "whatsapp" | "instagram" | "web"): Promise<ContactResponse> {
+  const idx = Date.now() % SAMPLE_NAMES.length
+  const name = SAMPLE_NAMES[idx]
+  const zones = ["Coral Gables", "South Miami", "Kendall"]
+  const zone = zones[Date.now() % zones.length]
+
+  const normalized = normalizeInbound({
+    source: channel,
+    name,
+    phone: channel === "whatsapp" ? `+1305555${1000 + idx}` : undefined,
+    email: channel === "instagram" ? undefined : `${name.split(" ")[0].toLowerCase()}@example.com`,
+    text: SAMPLE_MESSAGES[channel],
+    zone,
+  })
+
+  const score = scoreLead({
+    channel: normalized.channel,
+    hasEmail: !!normalized.email,
+    hasPhone: !!normalized.phone,
+    hasPropertyInterest: false,
+    hasZoneInterest: !!normalized.zone,
+    message: normalized.message,
+  })
+
+  await prisma.lead.create({
+    data: {
+      name: normalized.name,
+      email: normalized.email,
+      phone: normalized.phone,
+      channel: normalized.channel,
+      zone: normalized.zone,
+      message: normalized.message,
+      score,
+      status: "new",
+      agentId: await pickAgentId(),
+    },
+  })
+
+  revalidatePath("/admin/leads")
+  revalidatePath("/admin")
+  revalidatePath("/admin/alertas")
+  return { ok: true }
+}
