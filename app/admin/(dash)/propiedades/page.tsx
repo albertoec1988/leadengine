@@ -4,6 +4,7 @@ import { getMapProperties } from "@/lib/admin-queries"
 import { formatUSD, formatSqft } from "@/lib/format"
 import { PageHeader } from "@/components/admin/ui"
 import { PropertyStatusControl } from "@/components/admin/PropertyStatusControl"
+import { FeaturedToggle } from "@/components/admin/FeaturedToggle"
 
 export const dynamic = "force-dynamic"
 
@@ -23,6 +24,7 @@ export default async function AdminPropertiesPage() {
           <table className="w-full min-w-[720px] border-collapse text-sm">
             <thead>
               <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-muted">
+                <th className="w-10 px-2 py-3"></th>
                 <th className="px-4 py-3 font-medium">Propiedad</th>
                 <th className="px-4 py-3 font-medium">Zona</th>
                 <th className="px-4 py-3 font-medium">Precio</th>
@@ -34,6 +36,9 @@ export default async function AdminPropertiesPage() {
             <tbody>
               {properties.map((p) => (
                 <tr key={p.id} className="border-b border-line last:border-0 hover:bg-paper-2">
+                  <td className="px-2 py-3 text-center">
+                    <FeaturedToggle id={p.id} isFeatured={p.isFeatured} />
+                  </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <div className="relative h-11 w-16 shrink-0 overflow-hidden rounded-md bg-sand">

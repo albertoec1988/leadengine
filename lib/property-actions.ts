@@ -107,3 +107,25 @@ export async function updateProperty(
   revalidatePath("/mapa")
   redirect("/admin/propiedades")
 }
+
+export async function toggleFeatured(id: string): Promise<{ ok: boolean }> {
+  const user = await getSessionUser()
+  if (!user || user.role !== "admin") return { ok: false }
+
+  const prop = await prisma.property.findUnique({ where: { id }, select: { isFeatured: true } })
+  if (!prop) return { ok: false }
+
+  if (prop.isFeatured) {
+    await prisma.property.update({ where: { id }, data: { isFeatured: false } })
+  } else {
+    const max = await prisma.property.aggregate({ _max: { featuredOrder: true } })
+    await prisma.property.update({
+      where: { id },
+      data: { isFeatured: true, featuredOrder: (max._max.featuredOrder ?? 0) + 1 },
+    })
+  }
+
+  revalidatePath("/admin/propiedades")
+  revalidatePath("/")
+  return { ok: true }
+}

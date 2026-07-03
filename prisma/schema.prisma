@@ -56,6 +56,8 @@ model Property {
   lat           Float
   lng           Float
   status        String        @default("for_sale") // for_sale | pending | sold
+  isFeatured    Boolean       @default(false) // favorita: entra en el recorrido del mapa de la portada
+  featuredOrder Int           @default(0)     // orden dentro del recorrido
   bedrooms      Int
   bathrooms     Int
   areaSqft      Int
