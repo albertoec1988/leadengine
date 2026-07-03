@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LeadEngine — Floridian First Realty
 
-## Getting Started
+Plataforma de captación y gestión de leads para una inmobiliaria boutique de Coral Gables.
+Web pública que convierte visitantes en leads + panel interno (CRM) donde el equipo los
+califica, prioriza y cierra. **Ningún interesado se pierde.**
 
-First, run the development server:
+> Esta es la **demo v1**: las áreas funcionales están vivas con datos de ejemplo realistas.
+> Integraciones externas (IDX/MLS, WhatsApp real, IA) se simulan; la arquitectura queda lista
+> para conectarlas en fase 2. Ver `docs/superpowers/specs/2026-07-03-leadengine-demo-design.md`.
+
+## Puesta en marcha
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install          # instala dependencias (regenera el cliente Prisma en postinstall)
+npx prisma migrate dev   # crea la base de datos SQLite (dev.db)
+npm run db:seed          # carga datos de ejemplo
+npm run dev              # arranca en http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Tests: `npm test` · Build de producción: `npm run build`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Credenciales demo (panel `/admin`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Rol | Email | Contraseña |
+|-----|-------|-----------|
+| Admin | `admin@floridianfirst.com` | `demo1234` |
+| Agente | `agente1@floridianfirst.com` | `demo1234` |
 
-## Learn More
+## Qué incluye
 
-To learn more about Next.js, take a look at the following resources:
+**Web pública** (`/`): home, catálogo con filtros (`/propiedades`), ficha
+(`/propiedades/[id]`), valuación imán de leads (`/valuacion`), mapa (`/mapa`),
+contacto (`/contacto`). Cada formulario crea un lead calificado en el CRM.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Panel interno** (`/admin`): dashboard, CRM de leads (lista + ficha con score,
+estados, notas e historial), pipeline visual por etapas con importes, gestión de
+propiedades, mapa interno, analítica (Recharts) y alertas inteligentes. Incluye un
+botón de **captura omnicanal (demo)** para simular leads entrantes de WhatsApp/Instagram.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Arquitectura
 
-## Deploy on Vercel
+- **Next.js 16** (App Router) + **React 19** + **TypeScript** — una sola app: web + panel + backend.
+- **Prisma 7** + **SQLite** (migrable a Postgres sin reescribir la lógica).
+- **Tailwind v4** + sistema de diseño "Coastal" (`tokens.css`). Fuentes Fraunces + Geist.
+- **Leaflet + OpenStreetMap** (mapas sin clave API). **Recharts** (gráficas).
+- Auth con cookie de sesión firmada (HMAC) + bcrypt; roles admin/agent.
+- Lógica de negocio pura y testeada en `lib/`: `scoring`, `valuation`, `channels`, `alerts`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Estructura
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+app/(public)/     Web pública
+app/admin/        Login + panel (grupo (dash) protegido)
+components/site/   UI pública    components/admin/  UI del panel
+lib/               Motores, queries, server actions, auth
+prisma/            schema + seed
+docs/superpowers/  Diseño (spec) y planes de implementación
+```
