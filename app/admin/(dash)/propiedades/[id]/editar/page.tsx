@@ -2,6 +2,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { prisma } from "@/lib/db"
 import { PropertyForm, type PropertyFormValues } from "@/components/admin/PropertyForm"
+import { ImageManager } from "@/components/admin/ImageManager"
 
 export const dynamic = "force-dynamic"
 
@@ -11,7 +12,10 @@ export default async function EditPropertyPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const property = await prisma.property.findUnique({ where: { id } })
+  const property = await prisma.property.findUnique({
+    where: { id },
+    include: { images: { orderBy: { order: "asc" } } },
+  })
   if (!property) notFound()
 
   const values: PropertyFormValues = {
@@ -33,7 +37,15 @@ export default async function EditPropertyPage({
       </Link>
       <h1 className="mt-3 mb-6 font-display text-2xl text-ink">Editar propiedad</h1>
       <PropertyForm mode="edit" property={values} />
-      {/* La galería de imágenes se añade en la Fase 4 (Task 4.3). */}
+      <ImageManager
+        propertyId={property.id}
+        images={property.images.map((i) => ({
+          id: i.id,
+          url: i.url,
+          isPrimary: i.isPrimary,
+          order: i.order,
+        }))}
+      />
     </section>
   )
 }

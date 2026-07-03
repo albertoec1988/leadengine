@@ -33,7 +33,10 @@ export async function getProperties(filters: PropertyFilters = {}) {
 }
 
 export async function getPropertyById(id: string) {
-  return prisma.property.findUnique({ where: { id } })
+  return prisma.property.findUnique({
+    where: { id },
+    include: { images: { orderBy: { order: "asc" } } },
+  })
 }
 
 export async function getZoneSummary() {

@@ -52,6 +52,16 @@ export default async function PropertyDetailPage({
             </div>
           </div>
 
+          {property.images && property.images.length > 1 && (
+            <div className="mt-4 grid grid-cols-4 gap-2">
+              {property.images.map((img: { id: string; url: string }) => (
+                <div key={img.id} className="relative aspect-square overflow-hidden rounded-lg bg-sand">
+                  <Image src={img.url} alt="" fill className="object-cover" sizes="120px" />
+                </div>
+              ))}
+            </div>
+          )}
+
           <div className="mt-6">
             <p className="font-display text-4xl text-ink sm:text-5xl">{formatUSD(property.price)}</p>
             <h1
