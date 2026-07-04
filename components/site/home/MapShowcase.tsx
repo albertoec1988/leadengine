@@ -8,7 +8,6 @@ import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import "leaflet/dist/leaflet.css"
-import { useMotion } from "@/components/motion/MotionProvider"
 import { RevealText } from "@/components/motion/RevealText"
 
 export type ShowcaseStop = {
@@ -25,9 +24,7 @@ const IS_TOUCH = () => typeof window !== "undefined" && window.matchMedia("(poin
 
 export function MapShowcase({ stops }: { stops: ShowcaseStop[] }) {
   const mapElRef = useRef<HTMLDivElement>(null)
-  const sectionRef = useRef<HTMLElement>(null)
   const [active, setActive] = useState<ShowcaseStop | null>(null)
-  const { enabled } = useMotion()
 
   useEffect(() => {
     let map: import("leaflet").Map | undefined
@@ -37,6 +34,7 @@ export function MapShowcase({ stops }: { stops: ShowcaseStop[] }) {
       if (cancelled || !mapElRef.current) return
 
       const touch = IS_TOUCH()
+      const animate = !window.matchMedia("(prefers-reduced-motion: reduce)").matches
       map = L.map(mapElRef.current, {
         dragging: !touch,          // en móvil no secuestrar el scroll táctil
         scrollWheelZoom: false,
@@ -52,15 +50,33 @@ export function MapShowcase({ stops }: { stops: ShowcaseStop[] }) {
       }).addTo(map)
 
       stops.forEach((s, i) => {
+        // Construcción vía DOM (no interpolación de HTML) para evitar que
+        // photoUrl (dato de propiedad) se inyecte como marcado sin sanear.
+        const pinEl = document.createElement("div")
+        pinEl.className = `ffr-photo-pin${animate ? " pin-animate" : ""}`
+        pinEl.style.setProperty("--pin-delay", `${i * 90}ms`)
+
+        const bubble = document.createElement("div")
+        bubble.style.cssText =
+          "width:52px;height:52px;border-radius:9999px;border:3px solid #fff;box-shadow:0 6px 16px rgb(0 0 0/.35);overflow:hidden;background:#e6e2d8"
+
+        const img = document.createElement("img")
+        img.src = s.photoUrl // asignación de propiedad, sin interpolación HTML
+        img.alt = ""
+        img.loading = "lazy"
+        img.style.cssText = "width:100%;height:100%;object-fit:cover"
+
+        const tail = document.createElement("div")
+        tail.style.cssText =
+          "width:0;height:0;margin:-2px auto 0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:10px solid #fff;filter:drop-shadow(0 2px 2px rgb(0 0 0/.25))"
+
+        bubble.appendChild(img)
+        pinEl.appendChild(bubble)
+        pinEl.appendChild(tail)
+
         const icon = L.divIcon({
           className: "", // sin estilos por defecto de leaflet
-          html: `
-            <div class="ffr-photo-pin${enabled ? " pin-animate" : ""}" style="--pin-delay:${i * 90}ms">
-              <div style="width:52px;height:52px;border-radius:9999px;border:3px solid #fff;box-shadow:0 6px 16px rgb(0 0 0/.35);overflow:hidden;background:#e6e2d8">
-                <img src="${s.photoUrl}" alt="" style="width:100%;height:100%;object-fit:cover" loading="lazy"/>
-              </div>
-              <div style="width:0;height:0;margin:-2px auto 0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:10px solid #fff;filter:drop-shadow(0 2px 2px rgb(0 0 0/.25))"></div>
-            </div>`,
+          html: pinEl,
           iconSize: [52, 64],
           iconAnchor: [26, 64],
         })
@@ -80,14 +96,15 @@ export function MapShowcase({ stops }: { stops: ShowcaseStop[] }) {
       cancelled = true
       map?.remove()
     }
-    // stops es estático por render del server; enabled solo afecta la animación de entrada.
+    // stops es estático por render del server; prefers-reduced-motion se lee
+    // directamente dentro del efecto (client-only), sin depender de estado de React.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (stops.length === 0) return null
 
   return (
-    <section ref={sectionRef} className="bg-white py-20 sm:py-24">
+    <section className="bg-white py-20 sm:py-24">
       <div className="mx-auto w-full max-w-6xl px-5">
         <div className="text-center">
           <RevealText
