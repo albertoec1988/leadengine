@@ -26,6 +26,7 @@ export function ScrubHero({
   const rootRef = useRef<HTMLElement>(null)
   const mediaRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const [videoFailed, setVideoFailed] = useState(false)
   const { heavyEnabled } = useMotion()
   const useVideo = Boolean(videoSrc) && !videoFailed && heavyEnabled
@@ -33,6 +34,19 @@ export function ScrubHero({
   useGSAP(
     () => {
       if (!heavyEnabled || !rootRef.current) return
+
+      // Despegue del titular: en el último 40% del pin el contenido sube y se desvanece.
+      const lift = gsap.to(contentRef.current, {
+        yPercent: -35,
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: rootRef.current,
+          start: "60% bottom", // último 40% del recorrido del pin
+          end: "bottom bottom",
+          scrub: 0.4,
+        },
+      })
 
       if (useVideo && videoRef.current) {
         // PLACEHOLDER: video stock — sustituir por material real del cliente.
@@ -48,7 +62,10 @@ export function ScrubHero({
             }
           },
         })
-        return () => st.kill()
+        return () => {
+          st.kill()
+          lift.scrollTrigger?.kill()
+        }
       }
 
       // Modo imagen: zoom lento controlado por scroll (solo transform).
@@ -67,8 +84,13 @@ export function ScrubHero({
             },
           },
         )
-        return () => tween.scrollTrigger?.kill()
+        return () => {
+          tween.scrollTrigger?.kill()
+          lift.scrollTrigger?.kill()
+        }
       }
+
+      return () => lift.scrollTrigger?.kill()
     },
     { scope: rootRef, dependencies: [heavyEnabled, useVideo] },
   )
@@ -94,7 +116,7 @@ export function ScrubHero({
         </div>
         {/* Overlay navy para contraste AA del texto sobre el medio */}
         <div className="absolute inset-0 bg-gradient-to-b from-ffr-navy/60 via-ffr-navy/40 to-ffr-navy/70" />
-        <div className="relative z-10 flex h-full items-center justify-center px-5">
+        <div ref={contentRef} className="relative z-10 flex h-full items-center justify-center px-5">
           {children}
         </div>
       </div>
