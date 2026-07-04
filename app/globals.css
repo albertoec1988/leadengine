@@ -116,3 +116,19 @@ body {
 @utility font-montserrat {
   font-family: var(--font-montserrat), Montserrat, ui-sans-serif, system-ui, sans-serif;
 }
+
+/* Pines con foto del MapShowcase: entrada escalonada con rebote */
+@keyframes ffr-pin-in {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.ffr-photo-pin {
+  transform-origin: bottom center;
+}
+.ffr-photo-pin.pin-animate {
+  animation: ffr-pin-in 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: var(--pin-delay, 0ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ffr-photo-pin.pin-animate { animation: none; }
+}
