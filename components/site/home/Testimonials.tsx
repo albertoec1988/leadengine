@@ -1,5 +1,6 @@
 import { RevealText } from "@/components/motion/RevealText"
 import { ParallaxLayer } from "@/components/motion/ParallaxLayer"
+import { RevealGroup } from "@/components/motion/RevealGroup"
 
 const TESTIMONIALS = [
   {
@@ -31,7 +32,7 @@ export function Testimonials() {
         >
           &ldquo;
         </span>
-        <ul className="relative mt-10">
+        <RevealGroup className="relative mt-10">
           {TESTIMONIALS.map((t) => (
             <li key={t.author} className="rounded-3xl bg-white/70 p-8 shadow-sm backdrop-blur-sm sm:p-12">
               <RevealText as="p" className="text-lg italic leading-relaxed text-ffr-slate sm:text-xl">
@@ -42,7 +43,7 @@ export function Testimonials() {
               </p>
             </li>
           ))}
-        </ul>
+        </RevealGroup>
       </div>
     </section>
   )

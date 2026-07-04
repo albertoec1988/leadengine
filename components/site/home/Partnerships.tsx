@@ -1,12 +1,6 @@
-"use client"
-
-import { useRef } from "react"
 import Image from "next/image"
-import gsap from "gsap"
-import { useGSAP } from "@gsap/react"
 import { RevealText } from "@/components/motion/RevealText"
-import { useMotion } from "@/components/motion/MotionProvider"
-import { DUR, EASE, STAGGER } from "@/lib/motion-config"
+import { RevealGroup } from "@/components/motion/RevealGroup"
 
 const ASSOCIATIONS = [
   { file: "23_assoc-womens-council-realtors.png", name: "Women's Council of Realtors" },
@@ -18,28 +12,6 @@ const ASSOCIATIONS = [
 ]
 
 export function Partnerships() {
-  const ref = useRef<HTMLDivElement>(null)
-  const { enabled } = useMotion()
-
-  useGSAP(
-    () => {
-      if (!enabled || !ref.current) return
-      gsap.from(ref.current.children, {
-        y: 24,
-        opacity: 0,
-        duration: DUR.reveal,
-        ease: EASE.out,
-        stagger: STAGGER.cards,
-        scrollTrigger: {
-          trigger: ref.current,
-          start: "top 85%",
-          once: true,
-        },
-      })
-    },
-    { scope: ref, dependencies: [enabled] },
-  )
-
   return (
     <section className="bg-ffr-navy py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-5 text-center">
@@ -49,7 +21,7 @@ export function Partnerships() {
         >
           Partnerships &amp; Associations
         </RevealText>
-        <div ref={ref} className="mt-12 grid grid-cols-2 items-center gap-10 sm:grid-cols-3 lg:grid-cols-6">
+        <RevealGroup className="mt-12 grid grid-cols-2 items-center gap-10 sm:grid-cols-3 lg:grid-cols-6">
           {ASSOCIATIONS.map((a) => (
             <div
               key={a.file}
@@ -64,7 +36,7 @@ export function Partnerships() {
               />
             </div>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   )

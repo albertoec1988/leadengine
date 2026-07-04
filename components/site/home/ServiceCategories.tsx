@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import { RevealGroup } from "@/components/motion/RevealGroup"
 
 const CATEGORIES = [
   { label: "Residential", image: "/ffr/02_categoria-residential.jpg" },
@@ -11,7 +12,7 @@ export function ServiceCategories() {
   return (
     <section className="bg-paper-2">
       <div className="mx-auto max-w-6xl px-5 py-20 sm:py-28">
-        <div className="grid gap-6 md:grid-cols-3">
+        <RevealGroup className="grid gap-6 md:grid-cols-3">
           {CATEGORIES.map((cat) => (
             <Link
               key={cat.label}
@@ -36,7 +37,7 @@ export function ServiceCategories() {
               </div>
             </Link>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   )
