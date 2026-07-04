@@ -79,7 +79,7 @@ export function InertiaMarquee({
         drag.kill()
       }
     },
-    { scope: wrapRef, dependencies: [heavyEnabled, speed] },
+    { scope: wrapRef, dependencies: [heavyEnabled, speed], revertOnUpdate: true },
   )
 
   return (

@@ -92,7 +92,7 @@ export function ScrubHero({
 
       return () => lift.scrollTrigger?.kill()
     },
-    { scope: rootRef, dependencies: [heavyEnabled, useVideo] },
+    { scope: rootRef, dependencies: [heavyEnabled, useVideo], revertOnUpdate: true },
   )
 
   return (

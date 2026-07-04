@@ -40,7 +40,7 @@ export function RevealText({
       })
       return () => split.revert()
     },
-    { scope: ref, dependencies: [enabled] },
+    { scope: ref, dependencies: [enabled], revertOnUpdate: true },
   )
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

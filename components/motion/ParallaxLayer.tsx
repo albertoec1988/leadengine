@@ -38,7 +38,7 @@ export function ParallaxLayer({
         },
       )
     },
-    { scope: ref, dependencies: [heavyEnabled, speed] },
+    { scope: ref, dependencies: [heavyEnabled, speed], revertOnUpdate: true },
   )
 
   return (

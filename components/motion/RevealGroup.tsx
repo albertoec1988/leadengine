@@ -36,7 +36,7 @@ export function RevealGroup({
         scrollTrigger: { trigger: ref.current, start: "top 85%", once: true },
       })
     },
-    { scope: ref, dependencies: [enabled, y, stagger] },
+    { scope: ref, dependencies: [enabled, y, stagger], revertOnUpdate: true },
   )
 
   return (
