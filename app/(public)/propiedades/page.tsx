@@ -1,6 +1,9 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { getProperties, ZONES } from "@/lib/queries"
 import { PropertyCard } from "@/components/site/PropertyCard"
+import { PropertyMap } from "@/components/site/PropertyMap"
+import { formatUSD } from "@/lib/format"
 
 // Los datos vienen de la base de datos; renderizamos en cada request para no
 // depender de la BD durante el build (igual que la home y el mapa).
@@ -21,12 +24,15 @@ const STATUS_OPTIONS = [
 export default async function PropiedadesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ zone?: string; status?: string; beds?: string }>
+  searchParams: Promise<{ zone?: string; status?: string; beds?: string; view?: string }>
 }) {
   const sp = await searchParams
+  const view = sp.view === "map" ? "map" : "list"
+  // En la vista mapa, mostramos solo propiedades en venta por defecto.
+  const effectiveStatus = view === "map" ? (sp.status || "for_sale") : sp.status
   const properties = await getProperties({
     zone: sp.zone || undefined,
-    status: sp.status || undefined,
+    status: effectiveStatus || undefined,
     beds: sp.beds ? Number(sp.beds) : undefined,
   })
 
@@ -42,6 +48,7 @@ export default async function PropiedadesPage({
       </p>
 
       <form method="get" className="mt-8 flex flex-wrap items-end gap-3">
+        {view === "map" ? <input type="hidden" name="view" value="map" /> : null}
         <div className="flex flex-col gap-1">
           <label htmlFor="zone" className="text-xs uppercase tracking-wide text-muted">Zona</label>
           <select id="zone" name="zone" defaultValue={sp.zone ?? ""} className={selectClass}>
@@ -70,10 +77,48 @@ export default async function PropiedadesPage({
         </button>
       </form>
 
+      {(() => {
+        const qs = (v: string) => {
+          const params = new URLSearchParams()
+          if (sp.zone) params.set("zone", sp.zone)
+          if (sp.status) params.set("status", sp.status)
+          if (sp.beds) params.set("beds", sp.beds)
+          if (v === "map") params.set("view", "map")
+          const s = params.toString()
+          return s ? `?${s}` : ""
+        }
+        const chip = (active: boolean) =>
+          `rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+            active ? "bg-navy text-paper" : "border border-line text-muted hover:text-ink"
+          }`
+        return (
+          <div className="mt-4 flex items-center gap-2">
+            <Link href={`/propiedades${qs("list")}`} className={chip(view === "list")}>Lista</Link>
+            <Link href={`/propiedades${qs("map")}`} className={chip(view === "map")}>Mapa</Link>
+          </div>
+        )
+      })()}
+
       {properties.length === 0 ? (
         <p className="mt-16 text-center text-muted">
           No hay propiedades con esos criterios. Prueba a ampliar el filtro.
         </p>
+      ) : view === "map" ? (
+        <div className="mt-10">
+          <PropertyMap
+            height="65vh"
+            points={properties.map((p) => ({
+              id: p.id,
+              title: p.title,
+              lat: p.lat,
+              lng: p.lng,
+              price: formatUSD(p.price),
+              status: p.status,
+              zone: p.zone,
+              href: `/propiedades/${p.id}`,
+            }))}
+          />
+        </div>
       ) : (
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {properties.map((p) => (
