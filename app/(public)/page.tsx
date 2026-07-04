@@ -8,6 +8,9 @@ import { ValuationMagnet } from "@/components/site/home/ValuationMagnet"
 import { HappyClients } from "@/components/site/home/HappyClients"
 import { Partnerships } from "@/components/site/home/Partnerships"
 import { ConnectWithUs } from "@/components/site/home/ConnectWithUs"
+import { prisma } from "@/lib/db"
+import { formatUSD } from "@/lib/format"
+import { MapJourney, type JourneyStop } from "@/components/site/home/MapJourney"
 
 // Metadatos SEO reales del sitio del cliente (literales del scrape).
 export const metadata: Metadata = {
@@ -16,13 +19,29 @@ export const metadata: Metadata = {
     "Floridian First Realty puts it's clients first by providing specialized agents in residential, commercial, and luxury real estate. Buy, Sell, and Invest in Florida's Real Estate Market with Floridian First Realty.",
 }
 
-// La portada ya no consulta la BD: puede prerenderizarse estática.
-export default function HomePage() {
+export const dynamic = "force-dynamic"
+
+export default async function HomePage() {
+  const featured = await prisma.property.findMany({
+    where: { isFeatured: true, status: "for_sale" },
+    orderBy: { featuredOrder: "asc" },
+    take: 10,
+  })
+  const stops: JourneyStop[] = featured.map((p) => ({
+    id: p.id,
+    title: p.title,
+    lat: p.lat,
+    lng: p.lng,
+    photoUrl: p.photoUrl,
+    priceLabel: formatUSD(p.price),
+    href: `/propiedades/${p.id}`,
+  }))
   return (
     <>
       <HeroCinematic />
       <BrandStatement />
       <ServiceCategories />
+      {stops.length >= 2 && <MapJourney stops={stops} />}
       <HeartOfFFR />
       <Testimonials />
       <ValuationMagnet />
