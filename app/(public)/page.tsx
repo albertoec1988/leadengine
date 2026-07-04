@@ -3,6 +3,7 @@ import { HeroCinematic } from "@/components/site/home/HeroCinematic"
 import { BrandStatement } from "@/components/site/home/BrandStatement"
 import { ServiceCategories } from "@/components/site/home/ServiceCategories"
 import { HeartOfFFR } from "@/components/site/home/HeartOfFFR"
+import { TeamDirectory } from "@/components/site/home/TeamDirectory"
 import { Testimonials } from "@/components/site/home/Testimonials"
 import { ValuationMagnet } from "@/components/site/home/ValuationMagnet"
 import { HappyClients } from "@/components/site/home/HappyClients"
@@ -48,6 +49,7 @@ export default async function HomePage() {
       <ServiceCategories />
       {stops.length > 0 && <MapShowcase stops={stops} />}
       <HeartOfFFR />
+      <TeamDirectory />
       <Testimonials />
       <ValuationMagnet />
       <HappyClients />
