@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation"
 const NAV = [
   { href: "/propiedades", label: "Listings" },
   { href: "/valuacion", label: "Home Valuation" },
+  { href: "/mortgage-calculator", label: "Mortgage" },
   { href: "/mapa", label: "Map" },
   { href: "/contacto", label: "Contact" },
 ]

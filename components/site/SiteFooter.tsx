@@ -39,6 +39,9 @@ export async function SiteFooter() {
             <Link href="/contacto" className="underline-offset-4 hover:underline">
               Contact
             </Link>
+            <Link href="/mortgage-calculator" className="underline-offset-4 hover:underline">
+              Mortgage Calculator
+            </Link>
           </div>
         </div>
 
