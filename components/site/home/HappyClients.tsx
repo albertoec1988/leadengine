@@ -30,14 +30,14 @@ export function HappyClients() {
         {CLIENT_LOGOS.map((logo) => (
           <div
             key={logo.file}
-            className="mx-4 flex h-24 w-44 shrink-0 items-center justify-center rounded-xl bg-white/95 px-4"
+            className="mx-8 flex h-24 w-44 shrink-0 items-center justify-center"
           >
             <Image
               src={`/ffr/${logo.file}`}
               alt={`${logo.name} logo`}
               width={160}
               height={96}
-              className="max-h-16 w-auto object-contain"
+              className="max-h-20 w-auto object-contain"
             />
           </div>
         ))}
