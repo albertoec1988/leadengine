@@ -9,7 +9,6 @@
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { useGSAP } from "@gsap/react"
 import "leaflet/dist/leaflet.css"
@@ -36,6 +35,7 @@ export function MapJourney({ stops }: { stops: JourneyStop[] }) {
   const pathRef = useRef<SVGPolylineElement>(null)
   const mapRef = useRef<import("leaflet").Map | null>(null)
   const markersRef = useRef<import("leaflet").CircleMarker[]>([])
+  const lastCamRef = useRef<{ lat: number; lng: number } | null>(null)
   const [active, setActive] = useState(0)
   const activeRef = useRef(0)
   const { heavyEnabled } = useMotion()
@@ -59,6 +59,8 @@ export function MapJourney({ stops }: { stops: JourneyStop[] }) {
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "© OpenStreetMap",
         maxZoom: 19,
+        updateWhenIdle: true,
+        keepBuffer: 6,
       }).addTo(map)
 
       markersRef.current = stops.map((s, i) =>
@@ -114,7 +116,11 @@ export function MapJourney({ stops }: { stops: JourneyStop[] }) {
           const map = mapRef.current
           if (!map) return
           const cam = interpolateStops(stops, self.progress)
-          map.setView([cam.lat, cam.lng], JOURNEY_ZOOM, { animate: false })
+          const moved = !lastCamRef.current || Math.abs(cam.lat - lastCamRef.current.lat) > 0.0003 || Math.abs(cam.lng - lastCamRef.current.lng) > 0.0003
+          if (moved) {
+            map.setView([cam.lat, cam.lng], JOURNEY_ZOOM, { animate: false })
+            lastCamRef.current = { lat: cam.lat, lng: cam.lng }
+          }
           drawPath(self.progress)
           if (cam.index !== activeRef.current) {
             activeRef.current = cam.index
