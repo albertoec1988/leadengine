@@ -22,21 +22,47 @@ const labelClass = "mb-1.5 block text-xs font-medium uppercase tracking-wide tex
 const usd = (n: number, cents = false) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: cents ? 2 : 0 }).format(n)
 
+// Parsea texto de input a número para cálculo (comas/$ fuera, no-finito → 0).
+const parseNum = (text: string) => {
+  const n = Number(text.replace(/[^0-9.]/g, ""))
+  return Number.isFinite(n) ? n : 0
+}
+
+// Mientras se escribe: permisivo, solo descarta caracteres claramente inválidos
+// y colapsa a un único punto decimal. No reformatea (evita saltos de caret).
+const sanitizeTyping = (raw: string) => {
+  let s = raw.replace(/[^0-9.,]/g, "")
+  const dot = s.indexOf(".")
+  if (dot !== -1) s = s.slice(0, dot + 1) + s.slice(dot + 1).replace(/\./g, "")
+  return s
+}
+
+const fmtInt = (n: number) => Math.round(n).toLocaleString("en-US")
+const fmtDec = (n: number) => (Number.isFinite(n) ? String(n) : "0")
+
 export function MortgageCalculator({ initialPrice }: { initialPrice?: number }) {
   const startPrice = initialPrice && initialPrice > 0 ? Math.round(initialPrice) : 450_000
-  const [homePrice, setHomePrice] = useState(startPrice)
+  const [priceText, setPriceText] = useState(fmtInt(startPrice))
   const [downMode, setDownMode] = useState<"$" | "%">("%")
-  const [downPct, setDownPct] = useState(20)
-  const [downUsd, setDownUsd] = useState(downFromPct(startPrice, 20))
+  const [downPctText, setDownPctText] = useState(fmtDec(20))
+  const [downUsdText, setDownUsdText] = useState(fmtInt(downFromPct(startPrice, 20)))
   const [termYears, setTermYears] = useState<number>(30)
-  const [ratePct, setRatePct] = useState(6.5)
+  const [rateText, setRateText] = useState(fmtDec(6.5))
   const [showAdvanced, setShowAdvanced] = useState(false)
-  const [taxYearly, setTaxYearly] = useState(Math.round(startPrice * 0.011))
-  const [insuranceYearly, setInsuranceYearly] = useState(1_800)
-  const [hoaMonthly, setHoaMonthly] = useState(0)
+  const [taxText, setTaxText] = useState(fmtInt(Math.round(startPrice * 0.011)))
+  const [insuranceText, setInsuranceText] = useState(fmtInt(1_800))
+  const [hoaText, setHoaText] = useState(fmtInt(0))
   const [showSchedule, setShowSchedule] = useState(false)
 
-  const downPayment = downMode === "%" ? downFromPct(homePrice, downPct) : downUsd
+  const homePrice = parseNum(priceText)
+  const downPctNum = parseNum(downPctText)
+  const downUsdNum = parseNum(downUsdText)
+  const ratePct = parseNum(rateText)
+  const taxYearly = parseNum(taxText)
+  const insuranceYearly = parseNum(insuranceText)
+  const hoaMonthly = parseNum(hoaText)
+
+  const downPayment = downMode === "%" ? downFromPct(homePrice, downPctNum) : downUsdNum
 
   const result = useMemo(
     () =>
@@ -66,11 +92,6 @@ export function MortgageCalculator({ initialPrice }: { initialPrice?: number }) 
     ? payoff.toLocaleDateString("en-US", { month: "short", year: "numeric" })
     : "—"
 
-  const num = (v: string) => {
-    const n = Number(v.replace(/[^0-9.]/g, ""))
-    return Number.isFinite(n) ? n : 0
-  }
-
   return (
     <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
       {/* Formulario */}
@@ -79,13 +100,13 @@ export function MortgageCalculator({ initialPrice }: { initialPrice?: number }) 
           <div>
             <label className={labelClass} htmlFor="mc-price">Home price</label>
             <input
-              id="mc-price" inputMode="numeric" className={fieldClass} value={homePrice.toLocaleString("en-US")}
+              id="mc-price" inputMode="numeric" className={fieldClass} value={priceText}
               onChange={(e) => {
-                const v = num(e.target.value)
-                setHomePrice(v)
-                setTaxYearly(Math.round(v * 0.011))
-                if (downMode === "%") setDownUsd(downFromPct(v, downPct))
+                const t = sanitizeTyping(e.target.value)
+                setPriceText(t)
+                setTaxText(fmtInt(Math.round(parseNum(t) * 0.011)))
               }}
+              onBlur={() => setPriceText(fmtInt(parseNum(priceText)))}
             />
           </div>
 
@@ -98,8 +119,8 @@ export function MortgageCalculator({ initialPrice }: { initialPrice?: number }) 
                     key={m} type="button" aria-pressed={downMode === m}
                     onClick={() => {
                       if (m === downMode) return
-                      if (m === "$") setDownUsd(downFromPct(homePrice, downPct))
-                      else setDownPct(pctFromDown(homePrice, downUsd))
+                      if (m === "$") setDownUsdText(fmtInt(downFromPct(homePrice, downPctNum)))
+                      else setDownPctText(fmtDec(pctFromDown(homePrice, downUsdNum)))
                       setDownMode(m)
                     }}
                     className={`px-2.5 py-1 font-medium ${downMode === m ? "bg-ffr-navy text-white" : "text-muted hover:text-ink"}`}
@@ -111,14 +132,24 @@ export function MortgageCalculator({ initialPrice }: { initialPrice?: number }) 
             </div>
             {downMode === "%" ? (
               <input
-                id="mc-down" inputMode="decimal" className={fieldClass} value={downPct}
-                onChange={(e) => { const v = num(e.target.value); setDownPct(v); setDownUsd(downFromPct(homePrice, v)) }}
+                id="mc-down" inputMode="decimal" className={fieldClass} value={downPctText}
+                onChange={(e) => {
+                  const t = sanitizeTyping(e.target.value)
+                  setDownPctText(t)
+                  setDownUsdText(fmtInt(downFromPct(homePrice, parseNum(t))))
+                }}
+                onBlur={() => setDownPctText(fmtDec(parseNum(downPctText)))}
                 aria-describedby="mc-down-hint"
               />
             ) : (
               <input
-                id="mc-down" inputMode="numeric" className={fieldClass} value={downUsd.toLocaleString("en-US")}
-                onChange={(e) => { const v = num(e.target.value); setDownUsd(v); setDownPct(pctFromDown(homePrice, v)) }}
+                id="mc-down" inputMode="numeric" className={fieldClass} value={downUsdText}
+                onChange={(e) => {
+                  const t = sanitizeTyping(e.target.value)
+                  setDownUsdText(t)
+                  setDownPctText(fmtDec(pctFromDown(homePrice, parseNum(t))))
+                }}
+                onBlur={() => setDownUsdText(fmtInt(parseNum(downUsdText)))}
                 aria-describedby="mc-down-hint"
               />
             )}
@@ -139,8 +170,9 @@ export function MortgageCalculator({ initialPrice }: { initialPrice?: number }) 
             </div>
             <div>
               <label className={labelClass} htmlFor="mc-rate">Interest rate (%)</label>
-              <input id="mc-rate" type="number" step="0.125" min="0" className={fieldClass} value={ratePct}
-                onChange={(e) => setRatePct(num(e.target.value))} />
+              <input id="mc-rate" inputMode="decimal" className={fieldClass} value={rateText}
+                onChange={(e) => setRateText(sanitizeTyping(e.target.value))}
+                onBlur={() => setRateText(fmtDec(parseNum(rateText)))} />
             </div>
           </div>
 
@@ -155,18 +187,21 @@ export function MortgageCalculator({ initialPrice }: { initialPrice?: number }) 
             <div className="grid gap-4 sm:grid-cols-3">
               <div>
                 <label className={labelClass} htmlFor="mc-tax">Property taxes / yr</label>
-                <input id="mc-tax" inputMode="numeric" className={fieldClass} value={taxYearly.toLocaleString("en-US")}
-                  onChange={(e) => setTaxYearly(num(e.target.value))} />
+                <input id="mc-tax" inputMode="numeric" className={fieldClass} value={taxText}
+                  onChange={(e) => setTaxText(sanitizeTyping(e.target.value))}
+                  onBlur={() => setTaxText(fmtInt(parseNum(taxText)))} />
               </div>
               <div>
                 <label className={labelClass} htmlFor="mc-ins">Home insurance / yr</label>
-                <input id="mc-ins" inputMode="numeric" className={fieldClass} value={insuranceYearly.toLocaleString("en-US")}
-                  onChange={(e) => setInsuranceYearly(num(e.target.value))} />
+                <input id="mc-ins" inputMode="numeric" className={fieldClass} value={insuranceText}
+                  onChange={(e) => setInsuranceText(sanitizeTyping(e.target.value))}
+                  onBlur={() => setInsuranceText(fmtInt(parseNum(insuranceText)))} />
               </div>
               <div>
                 <label className={labelClass} htmlFor="mc-hoa">HOA fees / mo</label>
-                <input id="mc-hoa" inputMode="numeric" className={fieldClass} value={hoaMonthly.toLocaleString("en-US")}
-                  onChange={(e) => setHoaMonthly(num(e.target.value))} />
+                <input id="mc-hoa" inputMode="numeric" className={fieldClass} value={hoaText}
+                  onChange={(e) => setHoaText(sanitizeTyping(e.target.value))}
+                  onBlur={() => setHoaText(fmtInt(parseNum(hoaText)))} />
               </div>
             </div>
           )}
