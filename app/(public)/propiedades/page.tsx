@@ -44,6 +44,7 @@ export default async function PropiedadesPage({
       <h1 className="font-display text-4xl text-ink sm:text-5xl">Propiedades</h1>
       <p className="mt-3 text-muted">
         {properties.length} {properties.length === 1 ? "propiedad" : "propiedades"}
+        {view === "map" && !sp.status ? " en venta" : ""}
         {sp.zone ? ` en ${sp.zone}` : " en nuestras zonas"}.
       </p>
 

@@ -2,10 +2,10 @@ import Link from "next/link"
 import Image from "next/image"
 import { getSettings } from "@/lib/settings"
 import { SocialLinks, socialFromSettings } from "@/components/site/SocialLinks"
+import { OfficeMap } from "@/components/site/OfficeMap"
 
 // Oficina principal: 710 S. Dixie Hwy #100, Coral Gables, FL 33146 (aprox.)
 const OFFICE = { lat: 25.7145, lng: -80.2731 }
-const OSM_EMBED = `https://www.openstreetmap.org/export/embed.html?bbox=${OFFICE.lng - 0.012}%2C${OFFICE.lat - 0.007}%2C${OFFICE.lng + 0.012}%2C${OFFICE.lat + 0.007}&layer=mapnik&marker=${OFFICE.lat}%2C${OFFICE.lng}`
 const DIRECTIONS = "https://maps.google.com/?q=710+S+Dixie+Hwy+%23100,+Coral+Gables,+FL+33146"
 
 export async function SiteFooter() {
@@ -43,13 +43,7 @@ export async function SiteFooter() {
         </div>
 
         <div className="overflow-hidden rounded-2xl border border-white/15">
-          <iframe
-            src={OSM_EMBED}
-            title="Floridian First Realty office — 710 S. Dixie Hwy #100, Coral Gables"
-            className="h-56 w-full"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+          <OfficeMap lat={OFFICE.lat} lng={OFFICE.lng} />
         </div>
       </div>
     </footer>

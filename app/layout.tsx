@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: "%s · Floridian First Realty",
   },
   description:
-    "Inmobiliaria boutique en Coral Gables. Compra, vende y valora tu vivienda en Coral Gables, South Miami y Kendall con atención personalizada.",
+    "Inmobiliaria boutique en Coral Gables. Compra, vende y valora tu vivienda en Coral Gables, South Miami, Kendall, Miami y Fort Lauderdale con atención personalizada.",
 };
 
 export default function RootLayout({

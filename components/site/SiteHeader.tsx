@@ -27,9 +27,9 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`sticky top-0 z-40 transition-colors duration-300 ${
+      className={`sticky top-0 z-40 transition-all duration-300 ${
         overHero
-          ? "bg-transparent"
+          ? "bg-gradient-to-b from-ffr-navy/85 via-ffr-navy/40 to-transparent"
           : "border-b border-white/10 bg-ffr-navy shadow-lg shadow-black/20"
       }`}
     >

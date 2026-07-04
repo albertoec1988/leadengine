@@ -17,24 +17,27 @@ const CLIENT_LOGOS = [
 
 export function HappyClients() {
   return (
-    <section className="bg-white py-20 sm:py-28">
+    <section className="bg-ffr-navy py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-5 text-center">
         <RevealText
           as="h2"
-          className="font-montserrat text-2xl font-extrabold uppercase tracking-[0.18em] text-ffr-navy sm:text-3xl"
+          className="font-montserrat text-2xl font-extrabold uppercase tracking-[0.18em] text-white sm:text-3xl"
         >
           Some of our happy clients
         </RevealText>
       </div>
       <InertiaMarquee className="mt-12" speed={45}>
         {CLIENT_LOGOS.map((logo) => (
-          <div key={logo.file} className="mx-8 flex h-24 w-40 shrink-0 items-center justify-center">
+          <div
+            key={logo.file}
+            className="mx-4 flex h-24 w-44 shrink-0 items-center justify-center rounded-xl bg-white/95 px-4"
+          >
             <Image
               src={`/ffr/${logo.file}`}
               alt={`${logo.name} logo`}
               width={160}
               height={96}
-              className="max-h-24 w-auto object-contain"
+              className="max-h-16 w-auto object-contain"
             />
           </div>
         ))}

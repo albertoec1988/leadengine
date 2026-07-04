@@ -5,7 +5,7 @@ import { PropertyMap, type MapPoint } from "@/components/site/PropertyMap"
 
 export const metadata: Metadata = {
   title: "Mapa de propiedades",
-  description: "Explora nuestras propiedades sobre el mapa de Coral Gables, South Miami y Kendall.",
+  description: "Explora nuestras propiedades sobre el mapa de Coral Gables, South Miami, Kendall, Miami y Fort Lauderdale.",
 }
 
 export const dynamic = "force-dynamic"
@@ -27,7 +27,7 @@ export default async function MapaPage() {
     <section className="mx-auto w-full max-w-6xl px-5 py-10 sm:py-14">
       <h1 className="font-display text-4xl text-ink sm:text-5xl">Mapa de propiedades</h1>
       <p className="mt-3 text-muted">
-        {points.length} propiedades ubicadas en Coral Gables, South Miami y Kendall.
+        {points.length} propiedades ubicadas en Coral Gables, South Miami, Kendall, Miami y Fort Lauderdale.
         Selecciona un punto para ver los detalles.
       </p>
       <div className="mt-8">
