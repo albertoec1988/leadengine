@@ -55,13 +55,15 @@ export function MapShowcase({ stops }: { stops: ShowcaseStop[] }) {
         const pinEl = document.createElement("div")
         pinEl.className = `ffr-photo-pin${animate ? " pin-animate" : ""}`
         pinEl.style.setProperty("--pin-delay", `${i * 90}ms`)
+        pinEl.setAttribute("aria-label", `${s.title} — ${s.priceLabel}`)
 
         const bubble = document.createElement("div")
         bubble.style.cssText =
           "width:52px;height:52px;border-radius:9999px;border:3px solid #fff;box-shadow:0 6px 16px rgb(0 0 0/.35);overflow:hidden;background:#e6e2d8"
 
         const img = document.createElement("img")
-        img.src = s.photoUrl // asignación de propiedad, sin interpolación HTML
+        // Miniatura optimizada (52px de burbuja no necesita la original a resolución completa)
+        img.src = `/_next/image?url=${encodeURIComponent(s.photoUrl)}&w=128&q=70`
         img.alt = ""
         img.loading = "lazy"
         img.style.cssText = "width:100%;height:100%;object-fit:cover"
@@ -82,6 +84,10 @@ export function MapShowcase({ stops }: { stops: ShowcaseStop[] }) {
         })
         const marker = L.marker([s.lat, s.lng], { icon }).addTo(map!)
         marker.on("click", () => setActive(s))
+        marker.on("keypress", (e: import("leaflet").LeafletKeyboardEvent) => {
+          const k = e.originalEvent.key
+          if (k === "Enter" || k === " ") setActive(s)
+        })
       })
 
       map.on("click", () => setActive(null))
@@ -141,7 +147,7 @@ export function MapShowcase({ stops }: { stops: ShowcaseStop[] }) {
         </div>
 
         {/* Acceso alternativo en móvil (drag del mapa desactivado en táctil) */}
-        <div className="mt-4 flex gap-3 overflow-x-auto pb-2 sm:hidden">
+        <div className="mt-4 flex gap-3 overflow-x-auto pb-2 lg:hidden">
           {stops.map((s) => (
             <Link key={s.id} href={s.href} className="flex w-60 shrink-0 items-center gap-3 rounded-xl border border-line p-3">
               <div className="relative h-14 w-16 shrink-0 overflow-hidden rounded-lg bg-sand">
