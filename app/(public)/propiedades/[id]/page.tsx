@@ -1,3 +1,4 @@
+import { ViewTransition } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -38,19 +39,21 @@ export default async function PropertyDetailPage({
 
       <div className="mt-5 grid gap-8 lg:grid-cols-[1.5fr_1fr]">
         <div>
-          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-sand">
-            <Image
-              src={property.photoUrl}
-              alt={property.title}
-              fill
-              sizes="(max-width: 1024px) 100vw, 60vw"
-              className="object-cover"
-              priority
-            />
-            <div className="absolute left-4 top-4">
-              <PropertyStatusBadge status={property.status} />
+          <ViewTransition name={`property-photo-${property.id}`}>
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-sand">
+              <Image
+                src={property.photoUrl}
+                alt={property.title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 60vw"
+                className="object-cover"
+                priority
+              />
+              <div className="absolute left-4 top-4">
+                <PropertyStatusBadge status={property.status} />
+              </div>
             </div>
-          </div>
+          </ViewTransition>
 
           {property.images && property.images.length > 1 && (
             <div className="mt-4 grid grid-cols-4 gap-2">

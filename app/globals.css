@@ -132,3 +132,11 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .ffr-photo-pin.pin-animate { animation: none; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

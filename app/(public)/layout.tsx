@@ -1,3 +1,4 @@
+import { ViewTransition } from "react"
 import { Montserrat } from "next/font/google"
 import { MotionProvider } from "@/components/motion/MotionProvider"
 import { SiteHeader } from "@/components/site/SiteHeader"
@@ -14,7 +15,9 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
     <MotionProvider>
       <div className={`${montserrat.variable} flex min-h-screen flex-col`}>
         <SiteHeader />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1">
+          <ViewTransition>{children}</ViewTransition>
+        </main>
         <SiteFooter />
       </div>
     </MotionProvider>

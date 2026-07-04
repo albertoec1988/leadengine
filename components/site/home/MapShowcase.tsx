@@ -4,7 +4,7 @@
 // pines circulares con la FOTO de cada propiedad, entrada escalonada, y una
 // tarjeta flotante al hacer click con el link al detalle.
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, ViewTransition } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import "leaflet/dist/leaflet.css"
@@ -126,9 +126,11 @@ export function MapShowcase({ stops }: { stops: ShowcaseStop[] }) {
               href={active.href}
               className="absolute bottom-5 left-5 z-[600] flex w-72 items-center gap-3 rounded-xl bg-white/95 p-3 shadow-lg backdrop-blur"
             >
-              <div className="relative h-16 w-20 shrink-0 overflow-hidden rounded-lg bg-sand">
-                <Image src={active.photoUrl} alt="" fill sizes="80px" className="object-cover" />
-              </div>
+              <ViewTransition name={`property-photo-${active.id}`}>
+                <div className="relative h-16 w-20 shrink-0 overflow-hidden rounded-lg bg-sand">
+                  <Image src={active.photoUrl} alt="" fill sizes="80px" className="object-cover" />
+                </div>
+              </ViewTransition>
               <div className="min-w-0">
                 <p className="truncate font-montserrat text-sm font-bold text-ffr-navy">{active.title}</p>
                 <p className="text-xs text-ffr-slate">{active.priceLabel}</p>
