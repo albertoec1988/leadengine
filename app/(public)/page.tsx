@@ -52,9 +52,9 @@ export default async function HomePage() {
       <TeamDirectory />
       <Testimonials />
       <ValuationMagnet />
+      <ConnectWithUs social={socialFromSettings(settings)} />
       <HappyClients />
       <Partnerships />
-      <ConnectWithUs social={socialFromSettings(settings)} />
     </>
   )
 }
