@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react"
 
 export type SocialLink = {
-  name: "instagram" | "facebook" | "youtube" | "tiktok"
+  name: "instagram" | "facebook" | "youtube" | "tiktok" | "linkedin"
   url: string
 }
 
@@ -12,6 +12,7 @@ export function socialFromSettings(settings: Record<string, string>): SocialLink
     ["facebook", settings.facebookUrl],
     ["youtube", settings.youtubeUrl],
     ["tiktok", settings.tiktokUrl],
+    ["linkedin", settings.linkedinUrl],
   ] as const
   return map.filter(([, url]) => !!url).map(([name, url]) => ({ name, url: url! }))
 }
@@ -21,6 +22,7 @@ const LABEL: Record<SocialLink["name"], string> = {
   facebook: "Facebook",
   youtube: "YouTube",
   tiktok: "TikTok",
+  linkedin: "LinkedIn",
 }
 
 function Icon({ name, ...props }: { name: SocialLink["name"] } & ComponentProps<"svg">) {
@@ -33,6 +35,8 @@ function Icon({ name, ...props }: { name: SocialLink["name"] } & ComponentProps<
       "M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2 31.2 31.2 0 000 12a31.2 31.2 0 00.5 5.8 3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1A31.2 31.2 0 0024 12a31.2 31.2 0 00-.5-5.8zM9.6 15.6V8.4L15.8 12l-6.2 3.6z",
     tiktok:
       "M12.9 2h3.1c.2 1.2.8 2.4 1.8 3.2.9.9 2.1 1.4 3.4 1.5v3.2c-1.2 0-2.4-.3-3.5-.8-.5-.2-1-.5-1.5-.9v6.7a6.4 6.4 0 11-6.4-6.4c.3 0 .7 0 1 .1v3.3a3.2 3.2 0 102.1 3V2z",
+    linkedin:
+      "M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z",
   }
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden {...props}>

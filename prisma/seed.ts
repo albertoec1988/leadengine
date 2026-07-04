@@ -176,7 +176,21 @@ async function main() {
     data: { type: 'stalled_opportunity', refId: 'demo', message: 'Oportunidad estancada 9 días en "visit"', severity: 'medium' },
   })
 
-  console.log('Seed completado: usuarios, propiedades, leads, oportunidades, valuaciones, notificaciones.')
+  // settings del negocio (datos y redes REALES del cliente; upsert para no pisar ediciones)
+  const SETTINGS: Record<string, string> = {
+    businessName: 'Floridian First Realty',
+    contactEmail: 'MGonzalez@FLFirstRealty.com',
+    phone: '305.667.5235',
+    facebookUrl: 'https://www.facebook.com/FloridianFirstRealty/',
+    instagramUrl: 'https://www.instagram.com/floridianfirstrealty/',
+    tiktokUrl: 'https://www.tiktok.com/@floridianfirstrealty',
+    linkedinUrl: 'https://linkedin.com/in/michellegonzalezcommercial',
+  }
+  for (const [key, value] of Object.entries(SETTINGS)) {
+    await prisma.setting.upsert({ where: { key }, create: { key, value }, update: {} })
+  }
+
+  console.log('Seed completado: usuarios, propiedades, leads, oportunidades, valuaciones, notificaciones y settings.')
 }
 
 main()

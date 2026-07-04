@@ -3,6 +3,7 @@ import { Montserrat } from "next/font/google"
 import { MotionProvider } from "@/components/motion/MotionProvider"
 import { SiteHeader } from "@/components/site/SiteHeader"
 import { SiteFooter } from "@/components/site/SiteFooter"
+import { WhatsAppButton } from "@/components/site/WhatsAppButton"
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -19,6 +20,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           <ViewTransition>{children}</ViewTransition>
         </main>
         <SiteFooter />
+        <WhatsAppButton />
       </div>
     </MotionProvider>
   )

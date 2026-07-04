@@ -7,4 +7,6 @@ export const SETTING_KEYS = [
   { name: "facebookUrl", label: "Facebook", type: "url" as const },
   { name: "youtubeUrl", label: "YouTube", type: "url" as const },
   { name: "tiktokUrl", label: "TikTok", type: "url" as const },
+  { name: "linkedinUrl", label: "LinkedIn", type: "url" as const },
+  { name: "whatsappMessage", label: "WhatsApp (mensaje predefinido)", type: "text" as const },
 ]
