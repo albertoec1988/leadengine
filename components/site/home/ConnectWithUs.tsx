@@ -42,7 +42,7 @@ export function ConnectWithUs({ social = [] }: { social?: SocialLink[] }) {
 
   return (
     <section id="connect" className="bg-ffr-navy">
-      <RevealGroup className="mx-auto grid max-w-6xl gap-12 px-5 py-20 sm:py-28 lg:grid-cols-2">
+      <RevealGroup className="mx-auto grid max-w-6xl gap-12 px-5 py-12 sm:py-16 lg:grid-cols-2">
         <div className="text-white">
           <h2 className="font-montserrat text-2xl font-extrabold uppercase tracking-[0.18em] sm:text-3xl">
             Connect With Us

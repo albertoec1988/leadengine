@@ -33,7 +33,7 @@ const HEADSHOTS = [
 
 export function TeamDirectory() {
   return (
-    <section className="bg-paper-2 py-20 sm:py-28">
+    <section className="bg-paper-2 py-12 sm:py-16">
       <div className="mx-auto w-full max-w-6xl px-5 text-center">
         <p className="font-montserrat text-xs font-semibold uppercase tracking-[0.3em] text-ffr-slate">
           Exceptional Living, Expertly Crafted

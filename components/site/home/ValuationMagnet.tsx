@@ -12,7 +12,7 @@ export function ValuationMagnet() {
       <ParallaxLayer speed={0.3} className="pointer-events-none absolute -bottom-32 -left-16 h-80 w-80 rounded-full bg-white/5">
         <div />
       </ParallaxLayer>
-      <div className="relative mx-auto max-w-4xl px-5 py-24 text-center sm:py-32">
+      <div className="relative mx-auto max-w-4xl px-5 py-14 text-center sm:py-20">
         <RevealText
           as="h2"
           className="font-montserrat text-3xl font-extrabold uppercase leading-tight tracking-tight text-white sm:text-5xl"

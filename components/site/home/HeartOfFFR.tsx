@@ -5,7 +5,7 @@ import { ParallaxLayer } from "@/components/motion/ParallaxLayer"
 export function HeartOfFFR() {
   return (
     <section className="overflow-hidden bg-white">
-      <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-20 sm:py-28 lg:grid-cols-[0.9fr_1.1fr]">
+      <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-12 sm:py-16 lg:grid-cols-[0.9fr_1.1fr]">
         <ParallaxLayer speed={0.2} className="relative">
           <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
             <Image

@@ -28,7 +28,7 @@ export function Testimonials() {
       <ParallaxLayer speed={0.4} className="pointer-events-none absolute right-1/4 top-6 h-32 w-32 rounded-full border border-ffr-navy/10">
         <div />
       </ParallaxLayer>
-      <div className="relative mx-auto max-w-4xl px-5 py-20 text-center sm:py-28">
+      <div className="relative mx-auto max-w-4xl px-5 py-12 text-center sm:py-16">
         <RevealText
           as="h2"
           className="font-montserrat text-2xl font-extrabold uppercase tracking-[0.18em] text-ffr-navy sm:text-3xl"

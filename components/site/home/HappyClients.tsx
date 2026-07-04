@@ -17,7 +17,7 @@ const CLIENT_LOGOS = [
 
 export function HappyClients() {
   return (
-    <section className="bg-ffr-navy py-20 sm:py-28">
+    <section className="bg-ffr-navy py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-5 text-center">
         <RevealText
           as="h2"

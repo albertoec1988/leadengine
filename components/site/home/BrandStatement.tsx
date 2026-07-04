@@ -3,7 +3,7 @@ import { RevealText } from "@/components/motion/RevealText"
 export function BrandStatement() {
   return (
     <section className="bg-white">
-      <div className="mx-auto max-w-4xl px-5 py-24 text-center sm:py-32">
+      <div className="mx-auto max-w-4xl px-5 py-14 text-center sm:py-20">
         <RevealText
           as="h2"
           className="font-montserrat text-2xl font-extrabold uppercase tracking-[0.18em] text-ffr-navy sm:text-3xl"

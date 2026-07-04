@@ -11,7 +11,7 @@ const CATEGORIES = [
 export function ServiceCategories() {
   return (
     <section className="bg-paper-2">
-      <div className="mx-auto max-w-6xl px-5 py-20 sm:py-28">
+      <div className="mx-auto max-w-6xl px-5 py-12 sm:py-16">
         <RevealGroup className="grid gap-6 md:grid-cols-3">
           {CATEGORIES.map((cat) => (
             <Link

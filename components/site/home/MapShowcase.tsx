@@ -110,7 +110,7 @@ export function MapShowcase({ stops }: { stops: ShowcaseStop[] }) {
   if (stops.length === 0) return null
 
   return (
-    <section className="bg-white py-20 sm:py-24">
+    <section className="bg-white py-12 sm:py-16">
       <div className="mx-auto w-full max-w-6xl px-5">
         <div className="text-center">
           <RevealText
