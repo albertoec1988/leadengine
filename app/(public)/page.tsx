@@ -11,6 +11,8 @@ import { ConnectWithUs } from "@/components/site/home/ConnectWithUs"
 import { prisma } from "@/lib/db"
 import { formatUSD } from "@/lib/format"
 import { MapJourney, type JourneyStop } from "@/components/site/home/MapJourney"
+import { getSettings } from "@/lib/settings"
+import { socialFromSettings } from "@/components/site/SocialLinks"
 
 // Metadatos SEO reales del sitio del cliente (literales del scrape).
 export const metadata: Metadata = {
@@ -22,11 +24,14 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic"
 
 export default async function HomePage() {
-  const featured = await prisma.property.findMany({
-    where: { isFeatured: true, status: "for_sale" },
-    orderBy: { featuredOrder: "asc" },
-    take: 10,
-  })
+  const [featured, settings] = await Promise.all([
+    prisma.property.findMany({
+      where: { isFeatured: true, status: "for_sale" },
+      orderBy: { featuredOrder: "asc" },
+      take: 10,
+    }),
+    getSettings(),
+  ])
   const stops: JourneyStop[] = featured.map((p) => ({
     id: p.id,
     title: p.title,
@@ -47,7 +52,7 @@ export default async function HomePage() {
       <ValuationMagnet />
       <HappyClients />
       <Partnerships />
-      <ConnectWithUs />
+      <ConnectWithUs social={socialFromSettings(settings)} />
     </>
   )
 }

@@ -2,11 +2,12 @@
 
 import { useState } from "react"
 import { submitContactLead } from "@/lib/actions"
+import { SocialLinks, type SocialLink } from "@/components/site/SocialLinks"
 
 const fieldClass =
   "w-full rounded-lg border border-white/25 bg-white/10 px-4 py-3 text-sm text-white placeholder-white/50 outline-none transition-colors focus:border-white/60"
 
-export function ConnectWithUs() {
+export function ConnectWithUs({ social = [] }: { social?: SocialLink[] }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle")
   const [error, setError] = useState("")
 
@@ -74,6 +75,7 @@ export function ConnectWithUs() {
               </dd>
             </div>
           </dl>
+          <SocialLinks links={social} className="mt-8" />
         </div>
 
         <form onSubmit={onSubmit} className="grid gap-4" noValidate>
