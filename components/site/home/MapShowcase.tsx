@@ -65,7 +65,7 @@ export function MapShowcase({ stops }: { stops: ShowcaseStop[] }) {
         // Miniatura optimizada (52px de burbuja no necesita la original a resolución completa)
         img.src = `/_next/image?url=${encodeURIComponent(s.photoUrl)}&w=128&q=75`
         img.alt = ""
-        img.loading = "lazy"
+        img.loading = "eager" // eager: lazy no dispara dentro de los panes transformados de Leaflet
         img.style.cssText = "width:100%;height:100%;object-fit:cover"
 
         const tail = document.createElement("div")
