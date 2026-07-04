@@ -210,9 +210,12 @@ export function MortgageCalculator({ initialPrice }: { initialPrice?: number }) 
 
       {/* Resultados */}
       <div>
-        <div aria-live="polite">
+        <div>
           <PaymentDonut segments={segments} centerLabel="Est. payment" centerValue={usd(result.totalMonthly)} />
         </div>
+        <p className="sr-only" aria-live="polite">
+          Estimated payment {usd(result.totalMonthly)} per month
+        </p>
 
         <dl className="mt-8 grid grid-cols-2 gap-4 text-sm sm:grid-cols-4">
           <div><dt className="text-xs uppercase tracking-wide text-ffr-slate">Loan amount</dt><dd className="mt-1 font-montserrat font-bold text-ffr-navy">{usd(result.loanAmount)}</dd></div>

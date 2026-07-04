@@ -49,7 +49,7 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden items-center gap-7 lg:flex">
           {NAV.map((item) => (
             <Link
               key={item.href}
@@ -61,7 +61,7 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-4 md:flex">
+        <div className="hidden items-center gap-4 lg:flex">
           <Link
             href="/admin"
             className="text-sm text-white/85 transition-colors hover:text-white [text-shadow:0_1px_8px_rgb(0_0_0/0.45)]"
@@ -81,14 +81,14 @@ export function SiteHeader() {
           aria-label="Open menu"
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/25 md:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/25 lg:hidden"
         >
           <span className="text-lg leading-none text-white">{open ? "✕" : "☰"}</span>
         </button>
       </div>
 
       {open && (
-        <div className="border-t border-white/10 bg-ffr-navy px-5 pb-5 md:hidden">
+        <div className="border-t border-white/10 bg-ffr-navy px-5 pb-5 lg:hidden">
           <nav className="flex flex-col gap-1 pt-3">
             {NAV.map((item) => (
               <Link

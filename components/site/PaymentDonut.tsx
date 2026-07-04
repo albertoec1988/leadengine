@@ -37,7 +37,7 @@ export function PaymentDonut({
   return (
     <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-center">
       <div className="relative h-44 w-44 shrink-0" role="img" aria-label={`${centerLabel}: ${centerValue}. ${visible.map((s) => `${s.label} ${formatUSDShort(s.value)}`).join(", ")}`}>
-        <svg viewBox="0 0 42 42" className="h-full w-full -rotate-0">
+        <svg viewBox="0 0 42 42" className="h-full w-full">
           <circle cx="21" cy="21" r={R} fill="none" stroke="var(--paper-2)" strokeWidth="5" />
           {total > 0 &&
             arcs.map((a) => (
@@ -49,7 +49,6 @@ export function PaymentDonut({
                 fill="none"
                 stroke={a.color}
                 strokeWidth="5"
-                strokeLinecap="butt"
                 strokeDasharray={`${a.dash} ${100 - a.dash}`}
                 strokeDashoffset={a.offset}
                 className="transition-[stroke-width] duration-150 hover:[stroke-width:6]"

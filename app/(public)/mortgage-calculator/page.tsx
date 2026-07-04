@@ -28,7 +28,10 @@ export default async function MortgageCalculatorPage({
         See what your monthly payment could look like — including taxes, insurance and PMI.
       </p>
       <div className="mt-10">
-        <MortgageCalculator initialPrice={Number.isFinite(initialPrice) ? initialPrice : undefined} />
+        <MortgageCalculator
+          key={initialPrice ?? "default"}
+          initialPrice={Number.isFinite(initialPrice) ? initialPrice : undefined}
+        />
       </div>
     </section>
   )

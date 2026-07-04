@@ -67,18 +67,18 @@ export default async function PropertyDetailPage({
 
           <div className="mt-6">
             <p className="font-display text-4xl text-ink sm:text-5xl">{formatUSD(property.price)}</p>
-            <Link
-              href={`/mortgage-calculator?price=${property.price}`}
-              className="mt-2 inline-block text-sm font-medium text-ffr-navy underline-offset-4 hover:underline"
-            >
-              Estimate monthly payment →
-            </Link>
             <h1
               className="mt-2 text-xl font-medium text-ink"
               style={{ overflowWrap: "anywhere", minWidth: 0 }}
             >
               {property.title}
             </h1>
+            <Link
+              href={`/mortgage-calculator?price=${property.price}`}
+              className="mt-2 inline-block text-sm font-medium text-ffr-navy underline-offset-4 hover:underline"
+            >
+              Estimate monthly payment →
+            </Link>
             <p className="mt-1 text-muted">{property.address}</p>
 
             <dl className="mt-6 grid grid-cols-3 gap-4 border-y border-line py-5 text-center">
