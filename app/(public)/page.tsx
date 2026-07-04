@@ -10,7 +10,7 @@ import { Partnerships } from "@/components/site/home/Partnerships"
 import { ConnectWithUs } from "@/components/site/home/ConnectWithUs"
 import { prisma } from "@/lib/db"
 import { formatUSD } from "@/lib/format"
-import { MapJourney, type JourneyStop } from "@/components/site/home/MapJourney"
+import { MapShowcase, type ShowcaseStop } from "@/components/site/home/MapShowcase"
 import { getSettings } from "@/lib/settings"
 import { socialFromSettings } from "@/components/site/SocialLinks"
 
@@ -32,7 +32,7 @@ export default async function HomePage() {
     }),
     getSettings(),
   ])
-  const stops: JourneyStop[] = featured.map((p) => ({
+  const stops: ShowcaseStop[] = featured.map((p) => ({
     id: p.id,
     title: p.title,
     lat: p.lat,
@@ -46,7 +46,7 @@ export default async function HomePage() {
       <HeroCinematic />
       <BrandStatement />
       <ServiceCategories />
-      {stops.length >= 2 && <MapJourney stops={stops} />}
+      {stops.length > 0 && <MapShowcase stops={stops} />}
       <HeartOfFFR />
       <Testimonials />
       <ValuationMagnet />
